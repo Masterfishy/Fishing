@@ -1,4 +1,4 @@
+.vscode/
 venv/
 build/
-.vscode/
-
+bin/

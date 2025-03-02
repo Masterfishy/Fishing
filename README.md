@@ -1,3 +1,3 @@
 # Fishing!
 
-A web fishing web game written in C++.
+A web fishing game written in C++.
