@@ -16,6 +16,7 @@ class Game
 {
 public:
   /// @brief Construct a new fishing game.
+  /// @param renderer The game's renderer.
   Game(std::unique_ptr<Renderer>& renderer);
 
   /// @brief Shutdown the game.
