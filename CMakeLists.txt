@@ -5,6 +5,17 @@ project(Fishing)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Fetch Packages
+include(FetchContent)
+
+# GLM
+FetchContent_Declare(
+    glm
+	GIT_REPOSITORY	https://github.com/g-truc/glm.git
+	GIT_TAG 	    0af55ccecd98d4e5a8d1fad7de25ba429d60e863 #refs/1.0.1
+)
+FetchContent_MakeAvailable(glm)
+
 # Emscripten specific configuration
 if(EMSCRIPTEN)
     set(EMSCRIPTEN_LINK_FLAGS
@@ -38,9 +49,15 @@ add_executable(${PROJECT_NAME} src/main.cpp
                                src/game.cpp
                                src/renderer.cpp)
 
+# Link libraries
+target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm 
+                                              glfw # from emscripten install
+                                              )
+
 # Include directories
 target_include_directories(${PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/components
 )
 
 # Output directory

@@ -1,6 +1,6 @@
 # Basic .clang-format configuration for C++
 Language: Cpp
-BasedOnStyle: Mozilla
+BasedOnStyle: Microsoft
 
 # Indentation
 # IndentWidth: 4

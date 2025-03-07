@@ -17,30 +17,27 @@ std::unique_ptr<Game> gGame;
 std::chrono::time_point<std::chrono::high_resolution_clock> gLastFrameTime;
 
 /// @brief The game loop exposed to the browser.
-void
-gameLoop()
+void gameLoop()
 {
-  // Calculate the elapsed time
-  auto currentTime = std::chrono::high_resolution_clock::now();
-  float deltaTime =
-    std::chrono::duration<float>(currentTime - gLastFrameTime).count();
-  gLastFrameTime = currentTime;
+    // Calculate the elapsed time
+    auto currentTime = std::chrono::high_resolution_clock::now();
+    float deltaTime = std::chrono::duration<float>(currentTime - gLastFrameTime).count();
+    gLastFrameTime = currentTime;
 
-  // Update and render the game
-  gGame->update(deltaTime);
-  gGame->render();
+    // Update and render the game
+    gGame->update(deltaTime);
+    gGame->render();
 }
 
 /// @brief Entry point for the game program
-int
-main()
+int main()
 {
-  std::unique_ptr<Renderer> renderer = std::make_unique<Renderer>();
-  gGame = std::make_unique<Game>(renderer);
+    std::unique_ptr<Renderer> renderer = std::make_unique<Renderer>();
+    gGame = std::make_unique<Game>(renderer);
 
-  gLastFrameTime = std::chrono::high_resolution_clock::now();
+    gLastFrameTime = std::chrono::high_resolution_clock::now();
 
-  emscripten_set_main_loop(gameLoop, 0, false);
+    emscripten_set_main_loop(gameLoop, 0, false);
 
-  return 0;
+    return 0;
 }

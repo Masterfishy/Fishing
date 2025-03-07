@@ -1,7 +1,18 @@
 #include "renderer.hpp"
 
-//-----
-Renderer::Renderer() {}
+#include "sprite.hpp"
 
 //-----
-Renderer::~Renderer() {}
+Renderer::Renderer()
+{
+}
+
+//-----
+Renderer::~Renderer()
+{
+}
+
+//-----
+void Renderer::drawSprite(const Sprite &sprite)
+{
+}

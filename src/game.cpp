@@ -1,24 +1,26 @@
 #include "game.hpp"
-#include "renderer.hpp"
 
 #include <iostream>
 
-//-----
-Game::Game(std::unique_ptr<Renderer>& renderer)
-  : mRenderer(std::move(renderer))
-{}
+#include "renderer.hpp"
 
 //-----
-Game::~Game() {}
-
-//-----
-void
-Game::update(float deltaTime)
+Game::Game(std::unique_ptr<Renderer> &renderer) : mRenderer(std::move(renderer))
 {
-  // std::cout << "A frame?!?!?!?!?" << std::endl;
 }
 
 //-----
-void
-Game::render()
-{}
+Game::~Game()
+{
+}
+
+//-----
+void Game::update(float deltaTime)
+{
+    // std::cout << "A frame?!?!?!?!?" << std::endl;
+}
+
+//-----
+void Game::render()
+{
+}
