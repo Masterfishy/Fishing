@@ -10,20 +10,23 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory in the container
-WORKDIR /src
+WORKDIR /game
 
 # Copy source code
-COPY . .
+COPY CMakeLists.txt   .
+COPY src              ./src
+COPY assets           ./assets
+COPY web              ./web
 
 # Run CMake build
 RUN emcmake cmake -S . -B build && cd build && emmake make
 
 ###############
 # Hosting stage
-FROM nginx:alpine
+FROM docker.io/nginx:alpine
 
 # Copy built artifacts from builder stage
-COPY --from=builder /src/build/bin /usr/share/nginx/html
+COPY --from=builder /game/build/bin /usr/share/nginx/html
 
 # Copy Nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf

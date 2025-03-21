@@ -29,7 +29,7 @@ void gameLoop()
     gGame->render();
 }
 
-/// @brief Entry point for the game program
+/// @brief Entry point for the game program.
 int main()
 {
     std::unique_ptr<Renderer> renderer = std::make_unique<Renderer>();
