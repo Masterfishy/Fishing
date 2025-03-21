@@ -1,0 +1,35 @@
+#############
+# Build stage
+FROM docker.io/emscripten/emsdk:latest AS builder
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    cmake \
+    git \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory in the container
+WORKDIR /src
+
+# Copy source code
+COPY . .
+
+# Run CMake build
+RUN emcmake cmake -S . -B build && cd build && emmake make
+
+###############
+# Hosting stage
+FROM nginx:alpine
+
+# Copy built artifacts from builder stage
+COPY --from=builder /src/build/bin /usr/share/nginx/html
+
+# Copy Nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port
+EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
