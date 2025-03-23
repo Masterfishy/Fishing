@@ -16,12 +16,16 @@ std::unique_ptr<Game> gGame;
 // Frame timing variables
 std::chrono::time_point<std::chrono::high_resolution_clock> gLastFrameTime;
 
+const int GAME_WINDOW_WIDTH  = 800;
+const int GAME_WINDOW_HEIGHT = 600;
+
 /// @brief The game loop exposed to the browser.
 void gameLoop()
 {
     // Calculate the elapsed time
-    auto currentTime = std::chrono::high_resolution_clock::now();
-    float deltaTime = std::chrono::duration<float>(currentTime - gLastFrameTime).count();
+    auto  currentTime = std::chrono::high_resolution_clock::now();
+    float deltaTime =
+        std::chrono::duration<float>(currentTime - gLastFrameTime).count();
     gLastFrameTime = currentTime;
 
     // Update and render the game
@@ -33,7 +37,13 @@ void gameLoop()
 int main()
 {
     std::unique_ptr<Renderer> renderer = std::make_unique<Renderer>();
-    gGame = std::make_unique<Game>(renderer);
+    gGame = std::make_unique<Game>(std::move(renderer));
+
+    bool gameInitialized = gGame->initialize(800, 600);
+    if (!gameInitialized)
+    {
+        return 1;
+    }
 
     gLastFrameTime = std::chrono::high_resolution_clock::now();
 

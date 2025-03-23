@@ -8,19 +8,19 @@ BasedOnStyle: Microsoft
 # UseTab: Never
 # NamespaceIndentation: None
 
-# # Line Length and Breaking
-# ColumnLimit: 80
+# Line Length and Breaking
+ColumnLimit: 80
 # AllowShortBlocksOnASingleLine: false
 # AllowShortFunctionsOnASingleLine: Empty
 # AllowShortIfStatementsOnASingleLine: false
 # AllowShortLoopsOnASingleLine: false
 
-# # Alignment
-# AlignConsecutiveAssignments: true
-# AlignConsecutiveDeclarations: true
-# AlignEscapedNewlines: Left
-# AlignOperands: true
-# AlignTrailingComments: true
+# Alignment
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
+AlignEscapedNewlines: Left
+AlignOperands: true
+AlignTrailingComments: true
 
 # # Spacing
 # SpaceAfterCStyleCast: false
@@ -37,12 +37,12 @@ BasedOnStyle: Microsoft
 
 # # Breaks
 # BreakBeforeBraces: Allman
-# BreakConstructorInitializersBeforeComma: false
+# BreakConstructorInitializersBeforeComma: true
 # BreakStringLiterals: true
 
-# # Other
+# Other
 # KeepEmptyLinesAtTheStartOfBlocks: false
 # MaxEmptyLinesToKeep: 1
-# PointerAlignment: Left
-# SortIncludes: true
+PointerAlignment: Left
+SortIncludes: true
 #InsertNewlineAtEOF: true

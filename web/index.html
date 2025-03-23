@@ -2,33 +2,14 @@
 <html>
   <head>
     <title>Fishing!</title>
-    <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        background-color: #222;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      #canvas {
-        width: 800px;
-        height: 600px;
-        max-width: 100%;
-        max-height: 100%;
-        display: block;
-      }
-    </style>
   </head>
   <body>
     <canvas id="canvas"></canvas>
     <script>
-      var Module = {};
+      var Module = {
+        canvas: document.getElementById("canvas"),
+        onRuntimeInitialized: function () {},
+      };
     </script>
     <script src="Fishing.js"></script>
   </body>

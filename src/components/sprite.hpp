@@ -26,9 +26,11 @@ struct Sprite
     /// @param size       The size of the sprite.
     /// @param rotation   The rotation in degrees.
     /// @param color      The tint color.
-    Sprite(unsigned int id = 0, glm::vec2 position = glm::vec2(0.0f), glm::vec2 size = glm::vec2(1.0f),
-           float rotation = 0.0f, glm::vec4 color = glm::vec4(1.0f))
-        : textureId(id), position(position), size(size), rotation(rotation), color(color)
+    Sprite(unsigned int id = 0, glm::vec2 position = glm::vec2(0.0f),
+           glm::vec2 size = glm::vec2(1.0f), float rotation = 0.0f,
+           glm::vec4 color = glm::vec4(1.0f))
+        : textureId(id), position(position), size(size), rotation(rotation),
+          color(color)
     {
     }
 };
