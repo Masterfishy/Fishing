@@ -21,12 +21,26 @@ bool Game::initialize(int width, int height)
 {
     if (mRenderer == nullptr)
     {
-        std::cerr << "No renderer provided" << std::endl;
+        std::cerr << "Failed to initialize game, no renderer provided"
+                  << std::endl;
+        return false;
+    }
+
+    if (mSpriteRenderer == nullptr)
+    {
+        std::cerr << "Failed to initialize game, no sprite renderer provided"
+                  << std::endl;
         return false;
     }
 
     bool rendererInitialized = mRenderer->initialize(width, height);
     if (!rendererInitialized)
+    {
+        return false;
+    }
+
+    bool spriteRendererInitialized = mSpriteRenderer->initialize();
+    if (!spriteRendererInitialized)
     {
         return false;
     }
