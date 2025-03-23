@@ -47,7 +47,8 @@ endif()
 # Main executable
 add_executable(${PROJECT_NAME} src/main.cpp
                                src/game.cpp
-                               src/renderer.cpp)
+                               src/renderer.cpp
+                               src/sprite_renderer.cpp)
 
 # Link libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm 

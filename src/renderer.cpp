@@ -63,3 +63,17 @@ bool Renderer::initialize(int width, int height)
 
     return true;
 }
+
+//-----
+void Renderer::beginFrame()
+{
+    glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+//-----
+void Renderer::endFrame()
+{
+    glfwSwapBuffers(mWindow);
+    glfwPollEvents();
+}

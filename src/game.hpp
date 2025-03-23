@@ -7,6 +7,7 @@
 // Forward declarations
 
 class Renderer;
+class SpriteRenderer;
 
 // end forward declarations
 ///////////////////////////
@@ -17,7 +18,8 @@ class Game
   public:
     /// @brief Construct a new fishing game.
     /// @param renderer The game's renderer.
-    Game(std::unique_ptr<Renderer> renderer);
+    Game(std::unique_ptr<Renderer>       renderer,
+         std::unique_ptr<SpriteRenderer> spriteRenderer);
 
     /// @brief Shutdown the game.
     ~Game();
@@ -37,4 +39,7 @@ class Game
   private:
     /// @brief The renderer for the game.
     std::unique_ptr<Renderer> mRenderer;
+
+    /// @brief The sprite renderer for the game.
+    std::unique_ptr<SpriteRenderer> mSpriteRenderer;
 };

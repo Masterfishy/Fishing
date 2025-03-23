@@ -1,11 +1,13 @@
 #include "game.hpp"
+#include "renderer.hpp"
+#include "sprite_renderer.hpp"
 
 #include <iostream>
 
-#include "renderer.hpp"
-
 //-----
-Game::Game(std::unique_ptr<Renderer> renderer) : mRenderer(std::move(renderer))
+Game::Game(std::unique_ptr<Renderer>       renderer,
+           std::unique_ptr<SpriteRenderer> spriteRenderer)
+    : mRenderer(std::move(renderer)), mSpriteRenderer(std::move(spriteRenderer))
 {
 }
 
@@ -50,4 +52,7 @@ void Game::update(float deltaTime)
 //-----
 void Game::render()
 {
+    mRenderer->beginFrame();
+
+    mRenderer->endFrame();
 }
