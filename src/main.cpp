@@ -2,6 +2,7 @@
 #include "game.hpp"
 #include "renderer.hpp"
 #include "sprite_renderer.hpp"
+#include "texture_loader.hpp"
 
 // Emscripten includes
 #include <emscripten.h>
@@ -40,8 +41,11 @@ int main()
     std::unique_ptr<Renderer>       renderer = std::make_unique<Renderer>();
     std::unique_ptr<SpriteRenderer> spriteRenderer =
         std::make_unique<SpriteRenderer>();
+    std::unique_ptr<TextureLoader> textureLoader =
+        std::make_unique<TextureLoader>();
     gGame =
-        std::make_unique<Game>(std::move(renderer), std::move(spriteRenderer));
+        std::make_unique<Game>(std::move(renderer), std::move(spriteRenderer),
+                               std::move(textureLoader));
 
     bool gameInitialized = gGame->initialize(800, 600);
     if (!gameInitialized)

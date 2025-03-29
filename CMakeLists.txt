@@ -29,13 +29,13 @@ if(EMSCRIPTEN)
         "-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap']"
         "--bind"
         "-s USE_GLFW=3"
-        # Optional flags for asset loading
+        # Flags for asset loading
+        "-s FETCH=1"
         "-s ASYNCIFY=1"
-        # Audio support
+        # "--preload-file assets"
+        # Flags for audio support
         "-s USE_SDL=2"
         "-s USE_SDL_MIXER=2"
-        # Asset loading
-        # "--preload-file assets"
     )
     string(JOIN " " EMSCRIPTEN_LINK_FLAGS_STR ${EMSCRIPTEN_LINK_FLAGS})
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${EMSCRIPTEN_LINK_FLAGS_STR}")
@@ -48,7 +48,9 @@ endif()
 add_executable(${PROJECT_NAME} src/main.cpp
                                src/game.cpp
                                src/renderer.cpp
-                               src/sprite_renderer.cpp)
+                               src/sprite_renderer.cpp
+                               src/texture_loader.cpp
+                               )
 
 # Link libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm 

@@ -4,6 +4,7 @@
 
 // Vertex shader for sprite rendering
 const char* spriteVertexShaderSource = R"(#version 300 es
+    precision mediump float;
     layout (location = 0) in vec4 vertex; // <vec2 position, vec2 texCoords>
 
     out vec2 TexCoords;
@@ -20,6 +21,7 @@ const char* spriteVertexShaderSource = R"(#version 300 es
 
 // Fragment shader for sprite rendering
 const char* spriteFragmentShaderSource = R"(#version 300 es
+    precision mediump float;
     in vec2 TexCoords;
     out vec4 FragColor;
 
@@ -176,10 +178,11 @@ bool SpriteRenderer::compileShaders(const char* vertexShaderSource,
     int  shaderProgramLinkSuccess = 0;
     char shaderProgramLinkInfoLog[512];
 
-    glGetShaderiv(mShaderProgram, GL_LINK_STATUS, &shaderProgramLinkSuccess);
+    glGetProgramiv(mShaderProgram, GL_LINK_STATUS, &shaderProgramLinkSuccess);
     if (shaderProgramLinkSuccess == 0)
     {
-        glGetShaderInfoLog(mShaderProgram, 512, NULL, shaderProgramLinkInfoLog);
+        glGetProgramInfoLog(mShaderProgram, 512, NULL,
+                            shaderProgramLinkInfoLog);
         std::cerr << "Failed to link shader program: "
                   << shaderProgramLinkInfoLog << std::endl;
         return false;

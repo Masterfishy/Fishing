@@ -1,13 +1,17 @@
 #include "game.hpp"
 #include "renderer.hpp"
 #include "sprite_renderer.hpp"
+#include "texture_loader.hpp"
 
 #include <iostream>
 
 //-----
 Game::Game(std::unique_ptr<Renderer>       renderer,
-           std::unique_ptr<SpriteRenderer> spriteRenderer)
-    : mRenderer(std::move(renderer)), mSpriteRenderer(std::move(spriteRenderer))
+           std::unique_ptr<SpriteRenderer> spriteRenderer,
+           std::unique_ptr<TextureLoader>  textureLoader)
+    : mRenderer(std::move(renderer)),
+      mSpriteRenderer(std::move(spriteRenderer)),
+      mTextureLoader(std::move(textureLoader))
 {
 }
 
@@ -33,6 +37,13 @@ bool Game::initialize(int width, int height)
         return false;
     }
 
+    if (mTextureLoader == nullptr)
+    {
+        std::cerr << "Failed to initialize game, no texture loader provided"
+                  << std::endl;
+        return false;
+    }
+
     bool rendererInitialized = mRenderer->initialize(width, height);
     if (!rendererInitialized)
     {
@@ -44,6 +55,8 @@ bool Game::initialize(int width, int height)
     {
         return false;
     }
+
+    mTextureLoader->loadTexture("Fish", "assets/textures/fish_sprite.png");
 
     return true;
 }

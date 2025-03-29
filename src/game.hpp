@@ -8,6 +8,7 @@
 
 class Renderer;
 class SpriteRenderer;
+class TextureLoader;
 
 // end forward declarations
 ///////////////////////////
@@ -19,7 +20,8 @@ class Game
     /// @brief Construct a new fishing game.
     /// @param renderer The game's renderer.
     Game(std::unique_ptr<Renderer>       renderer,
-         std::unique_ptr<SpriteRenderer> spriteRenderer);
+         std::unique_ptr<SpriteRenderer> spriteRenderer,
+         std::unique_ptr<TextureLoader>  textureLoader);
 
     /// @brief Shutdown the game.
     ~Game();
@@ -42,4 +44,7 @@ class Game
 
     /// @brief The sprite renderer for the game.
     std::unique_ptr<SpriteRenderer> mSpriteRenderer;
+
+    /// @brief The texture loader for the game.
+    std::unique_ptr<TextureLoader> mTextureLoader;
 };
