@@ -3,10 +3,7 @@
 #include <iostream>
 
 // Vertex shader for sprite rendering
-const char* spriteVertexShaderSource = R"(
-    #version 300 es
-    precision mediump float
-
+const char* spriteVertexShaderSource = R"(#version 300 es
     layout (location = 0) in vec4 vertex; // <vec2 position, vec2 texCoords>
 
     out vec2 TexCoords;
@@ -22,10 +19,7 @@ const char* spriteVertexShaderSource = R"(
 )";
 
 // Fragment shader for sprite rendering
-const char* spriteFragmentShaderSource = R"(
-    #version 300 es
-    precision mediump float
-
+const char* spriteFragmentShaderSource = R"(#version 300 es
     in vec2 TexCoords;
     out vec4 FragColor;
 
@@ -78,6 +72,45 @@ bool SpriteRenderer::initialize()
     {
         return false;
     }
+
+    // Configure VAO VBO EBO
+    float vertices[] = {
+        // positions - texture coordinates
+        0.0f, 1.0f, 0.0f, 1.0f, // top left
+        1.0f, 1.0f, 1.0f, 1.0f, // top right
+        1.0f, 0.0f, 1.0f, 0.0f, // bottom right
+        0.0f, 0.0f, 0.0f, 0.0f, // bottom left
+    };
+
+    unsigned int indices[] = {
+        0, 1,
+        2, // first triangle
+        2, 3,
+        0 // second triangle
+    };
+
+    // Bind to VAO to store rendering data
+    glGenVertexArrays(1, &mVAO);
+    glGenBuffers(1, &mVBO);
+    glGenBuffers(1, &mEBO);
+
+    glBindVertexArray(mVAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
+                 GL_STATIC_DRAW);
+
+    // Position and texture coordinate attributes
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float),
+                          (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glBindVertexArray(0);                     // Unbind from VAO
+    glBindBuffer(GL_ARRAY_BUFFER, 0);         // Unbind from VBO after VAO
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // Unbind from EBO after VAO
 
     return true;
 }
