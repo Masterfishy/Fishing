@@ -17,32 +17,30 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(glm)
 
 # Emscripten specific configuration
-if(EMSCRIPTEN)
-    set(EMSCRIPTEN_LINK_FLAGS
-        "-s WASM=1"
-        "-s USE_WEBGL2=1"
-        "-s FULL_ES3=1"
-        "-s MIN_WEBGL_VERSION=2"
-        "-s MAX_WEBGL_VERSION=2"
-        "-s ALLOW_MEMORY_GROWTH=1"
-        "-s NO_EXIT_RUNTIME=1"
-        "-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap']"
-        "--bind"
-        "-s USE_GLFW=3"
-        # Flags for asset loading
-        "-s FETCH=1"
-        "-s ASYNCIFY=1"
-        # "--preload-file assets"
-        # Flags for audio support
-        "-s USE_SDL=2"
-        "-s USE_SDL_MIXER=2"
-    )
-    string(JOIN " " EMSCRIPTEN_LINK_FLAGS_STR ${EMSCRIPTEN_LINK_FLAGS})
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${EMSCRIPTEN_LINK_FLAGS_STR}")
-    
-    # Set output file extensions
-    set(CMAKE_EXECUTABLE_SUFFIX ".js")
-endif()
+set(EMSCRIPTEN_LINK_FLAGS
+    "-s WASM=1"
+    "-s USE_WEBGL2=1"
+    "-s FULL_ES3=1"
+    "-s MIN_WEBGL_VERSION=2"
+    "-s MAX_WEBGL_VERSION=2"
+    "-s ALLOW_MEMORY_GROWTH=1"
+    "-s NO_EXIT_RUNTIME=1"
+    "-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap']"
+    "--bind"
+    "-s USE_GLFW=3"
+    # Flags for asset loading
+    "-s FETCH=1"
+    "-s ASYNCIFY=1"
+    # "--preload-file assets"
+    # Flags for audio support
+    "-s USE_SDL=2"
+    "-s USE_SDL_MIXER=2"
+)
+string(JOIN " " EMSCRIPTEN_LINK_FLAGS_STR ${EMSCRIPTEN_LINK_FLAGS})
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${EMSCRIPTEN_LINK_FLAGS_STR}")
+
+# Set output file extensions
+set(CMAKE_EXECUTABLE_SUFFIX ".js")
 
 # Main executable
 add_executable(${PROJECT_NAME} src/main.cpp
@@ -65,14 +63,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
 # Output directory
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
-
-# Copy web files to bin
-if(EMSCRIPTEN)
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${CMAKE_SOURCE_DIR}/web
-            ${CMAKE_BINARY_DIR}/bin
-    )
-endif()

@@ -3,8 +3,6 @@
 #include <cstring>
 #include <iostream>
 
-const std::string SERVE_DOMAIN = "https://localhost:8080";
-
 /// @brief Callback when a texture is downloaded from the server.
 /// @param fetch The emscripten fetch request.
 void downloadSucceeded(emscripten_fetch_t* fetch)
@@ -32,8 +30,6 @@ TextureLoader::TextureLoader() : mLoadCallback(nullptr)
 void TextureLoader::loadTexture(const std::string& name,
                                 const std::string& filePath)
 {
-    const std::string url = SERVE_DOMAIN + "/" + filePath;
-
     emscripten_fetch_attr_t attr;
     emscripten_fetch_attr_init(&attr);
 
@@ -42,5 +38,5 @@ void TextureLoader::loadTexture(const std::string& name,
     attr.onsuccess  = downloadSucceeded;
     attr.onerror    = downloadFailed;
 
-    emscripten_fetch(&attr, url.c_str());
+    emscripten_fetch(&attr, filePath.c_str());
 }

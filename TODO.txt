@@ -1,2 +1,3 @@
 - [ ] Move to a docker compose build?
 - [ ] Provide different configs for different origins for nginx
+- [ ] Forward http traffic to https
