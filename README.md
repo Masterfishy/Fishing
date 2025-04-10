@@ -13,7 +13,7 @@ A Podman container builds and then hosts the game with NginX.
 ### Building
 
 ```bash
-podman build -f Dockerfile.dev -t fishing-game .
+podman build -f Containerfile.deploy -t fishing-game .
 ```
 
 ### Running

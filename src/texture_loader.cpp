@@ -8,7 +8,7 @@
 void downloadSucceeded(emscripten_fetch_t* fetch)
 {
     std::cout << fetch->status << " Fetched " << fetch->numBytes
-              << " successfully!" << std::endl;
+              << " bytes successfully!" << std::endl;
     emscripten_fetch_close(fetch);
 }
 

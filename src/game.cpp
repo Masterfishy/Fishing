@@ -56,7 +56,7 @@ bool Game::initialize(int width, int height)
         return false;
     }
 
-    mTextureLoader->loadTexture("Fish", "assets/textures/fish_sprite.png");
+    mTextureLoader->loadTexture("fish", "assets/textures/fish_sprite.png");
 
     return true;
 }
