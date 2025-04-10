@@ -22,3 +22,13 @@ podman build -f Containerfile.deploy -t fishing-game .
 podman run --replace -p 8080:80 --name fishing fishing-game
 ```
 
+### Setting Up DevContainer
+
+1. Install podman on windows
+2. Run
+  ```
+  podman machine start
+  ```
+3. Disable wayland (there is some error related to wsl and wayland and windows and paths https://github.com/containers/podman/issues/17986#issuecomment-2525290149)
+4. Reopen in devcontainer
+5. Update the cpp_properties to use `/emsdk/upstream/emscripten/emcc` and add `/emsdk/upstream/emscripten/system/include/**` to your include path
