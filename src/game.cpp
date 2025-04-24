@@ -56,7 +56,8 @@ bool Game::initialize(int width, int height)
         return false;
     }
 
-    mTextureLoader->loadTexture("fish", "assets/textures/fish_sprite.png");
+    mTextureLoader->loadTexture("assets/textures/fish_sprite.png", this,
+                                &Game::addTexture);
 
     return true;
 }
@@ -82,4 +83,10 @@ void Game::render()
     mRenderer->beginFrame();
 
     mRenderer->endFrame();
+}
+
+//-----
+void Game::addTexture(const std::string& name, unsigned int texture)
+{
+    std::cout << "Game - Add texture for " << name << std::endl;
 }

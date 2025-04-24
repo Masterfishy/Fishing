@@ -1,3 +1,4 @@
 - [ ] Move to a docker compose build?
 - [ ] Provide different configs for different origins for nginx
-- [ ] Forward http traffic to https
+- [x] Forward http traffic to https - Non issue, was fetching from wrong url
+- [ ] Cache textures in the browser? Maybe?

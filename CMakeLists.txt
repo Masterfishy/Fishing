@@ -59,6 +59,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/src/components
+    ${CMAKE_CURRENT_SOURCE_DIR}/external
 )
 
 # Output directory

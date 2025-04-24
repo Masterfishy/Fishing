@@ -1,7 +1,9 @@
 #pragma once
 
 // System includes
+#include <map>
 #include <memory>
+#include <string>
 
 ///////////////////////////
 // Forward declarations
@@ -47,4 +49,8 @@ class Game
 
     /// @brief The texture loader for the game.
     std::unique_ptr<TextureLoader> mTextureLoader;
+
+    std::map<std::string, unsigned int> mTextureMap;
+
+    void addTexture(const std::string& name, unsigned int texture);
 };

@@ -13,8 +13,9 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /game
 
 # Copy source code
-COPY CMakeLists.txt   .
-COPY src              ./src
+COPY CMakeLists.txt .
+COPY src            ./src
+COPY external       ./external
 
 # Run CMake build
 RUN emcmake cmake -S . -B build && cd build && emmake make

@@ -5,11 +5,5 @@ RUN apt-get update && apt-get install -y \
     cmake \
     git \
     build-essential \
+    clang-format \
     && rm -rf /var/lib/apt/lists/*
-
-# Set working directory in the container
-WORKDIR /game
-
-# Copy source code
-COPY CMakeLists.txt   .
-COPY src              ./src
