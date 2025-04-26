@@ -1,5 +1,8 @@
 #include "sprite_renderer.hpp"
+#include "entity.hpp"
 
+#include <glm/ext/matrix_clip_space.hpp> // glm::ortho
+#include <glm/ext/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale
 #include <iostream>
 
 // Vertex shader for sprite rendering
@@ -115,6 +118,62 @@ bool SpriteRenderer::initialize()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // Unbind from EBO after VAO
 
     return true;
+}
+
+//-----
+void SpriteRenderer::drawEntity(Entity& entity)
+{
+    Sprite& sprite = entity.getSpriteComponent();
+
+    // Set uniforms
+    glm::mat4 model = glm::mat4(1.0f);
+
+    // Move the model to the sprite's position
+    model = glm::translate(model, glm::vec3(sprite.position, 0.0f));
+
+    // Move the model to center of sprite for rotation
+    model = glm::translate(
+        model, glm::vec3(0.5f * sprite.size.x, 0.5f * sprite.size.y, 0.0f));
+
+    // Rotate the model with sprite
+    model = glm::rotate(model, glm::radians(sprite.rotation),
+                        glm::vec3(0.0f, 0.0f, 1.0f));
+
+    // Move the model back from center
+    model = glm::translate(
+        model, glm::vec3(-0.5f * sprite.size.x, -0.5f * sprite.size.y, 0.0f));
+
+    // Scale the model to the sprite scale
+    model = glm::scale(model, glm::vec3(sprite.size, 1.0f));
+
+    // Get viewport size for orthographic projection
+    GLint viewport[4];
+    glGetIntegerv(GL_VIEWPORT, viewport);
+    glm::mat4 projection =
+        glm::ortho(0.0f, static_cast<float>(viewport[2]),
+                   static_cast<float>(viewport[3]), 0.0f, -1.0f, 1.0f);
+
+    // Set the uniforms of the shader program
+    glUseProgram(mShaderProgram);
+    glUniformMatrix4fv(glGetUniformLocation(mShaderProgram, "model"), 1,
+                       GL_FALSE, &model[0][0]);
+    glUniformMatrix4fv(glGetUniformLocation(mShaderProgram, "projection"), 1,
+                       GL_FALSE, &projection[0][0]);
+    glUniform4fv(glGetUniformLocation(mShaderProgram, "spriteColor"), 1,
+                 &sprite.color[0]);
+
+    // Draw sprite
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D,
+                  sprite.textureId); // Bind to the sprite's texture
+
+    glBindVertexArray(mVAO); // Bind to the program's vertex array
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0); // Unbind from VAO
+
+    glBindTexture(GL_TEXTURE_2D, 0); // Unbind from texture
+
+    glUseProgram(0); // Reset the program
 }
 
 //-----

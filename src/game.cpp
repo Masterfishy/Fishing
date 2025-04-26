@@ -3,6 +3,8 @@
 #include "sprite_renderer.hpp"
 #include "texture_loader.hpp"
 
+#include "entity.hpp"
+
 #include <iostream>
 
 //-----
@@ -59,6 +61,8 @@ bool Game::initialize(int width, int height)
     mTextureLoader->loadTexture("assets/textures/fish_sprite.png", this,
                                 &Game::addTexture);
 
+    mEntities.emplace_back(Entity());
+
     return true;
 }
 
@@ -73,6 +77,17 @@ void Game::update(float deltaTime)
         return;
     }
 
+    for (auto& entity : mEntities)
+    {
+        Sprite& sprite = entity.getSpriteComponent();
+
+        sprite.position.x += static_cast<int>(sprite.position.x + 10.0f) % 600;
+        sprite.position.y += static_cast<int>(sprite.position.y + 10.0f) % 800;
+
+        sprite.size.x += static_cast<int>(sprite.size.x * 2.0f) % 20;
+        sprite.size.y += static_cast<int>(sprite.size.y * 2.0f) % 20;
+    }
+
     std::cout << "Game alive!" << std::endl;
     counter = 0;
 }
@@ -80,7 +95,20 @@ void Game::update(float deltaTime)
 //-----
 void Game::render()
 {
+    if (!mRenderer)
+    {
+        return;
+    }
+
     mRenderer->beginFrame();
+
+    if (mSpriteRenderer)
+    {
+        for (auto& entity : mEntities)
+        {
+            mSpriteRenderer->drawEntity(entity);
+        }
+    }
 
     mRenderer->endFrame();
 }
@@ -89,4 +117,9 @@ void Game::render()
 void Game::addTexture(const std::string& name, unsigned int texture)
 {
     std::cout << "Game - Add texture for " << name << std::endl;
+    for (auto& entity : mEntities)
+    {
+        Sprite& sprite   = entity.getSpriteComponent();
+        sprite.textureId = texture;
+    }
 }

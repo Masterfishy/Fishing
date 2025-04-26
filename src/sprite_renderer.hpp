@@ -2,6 +2,14 @@
 
 #include <GLES3/gl3.h>
 
+///////////////////////////
+// Forward delcarations
+
+class Entity;
+
+// end forward declarations
+///////////////////////////
+
 class SpriteRenderer
 {
   public:
@@ -15,6 +23,8 @@ class SpriteRenderer
     ///        Will compile shaders and prepare the renderer's buffers.
     /// @return True if the initialization is successful; false otherwise.
     bool initialize();
+
+    void drawEntity(Entity& entity);
 
   private:
     /// @brief Compiles the given vertex and fragment shader sources.

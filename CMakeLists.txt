@@ -48,6 +48,7 @@ add_executable(${PROJECT_NAME} src/main.cpp
                                src/renderer.cpp
                                src/sprite_renderer.cpp
                                src/texture_loader.cpp
+                               src/entity.cpp
                                )
 
 # Link libraries

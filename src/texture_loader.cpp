@@ -20,6 +20,7 @@ void downloadSucceeded(emscripten_fetch_t* fetch)
     TextureLoader* loader = reinterpret_cast<TextureLoader*>(fetch->userData);
 
     unsigned int texture = loader->generateTexture(data, fetch->numBytes);
+    loader->cacheTexture(fetch->url, texture);
     loader->resolveRequests(fetch->url, texture);
 
     emscripten_fetch_close(fetch);
@@ -32,40 +33,65 @@ void downloadFailed(emscripten_fetch_t* fetch)
     std::cout << fetch->status << " Fetching " << fetch->url << " failed :("
               << std::endl;
 
+    // TODO: Handle requests waiting for this failed resource grab?
+
     emscripten_fetch_close(fetch);
 }
 
 //-----
-TextureLoader::TextureLoader() : mLoadRequests()
+TextureLoader::TextureLoader() : mLoadRequests(), mTextureCache()
 {
 }
 
 //-----
-void TextureLoader::loadTexture(const std::string&    filePath,
+TextureLoader::~TextureLoader()
+{
+    for (const auto& texture : mTextureCache)
+    {
+        glDeleteTextures(1, &texture.second);
+    }
+
+    mTextureCache.clear();
+}
+
+//-----
+void TextureLoader::loadTexture(const std::string&    url,
                                 TextureLoaderCallback callback)
 {
-    const auto& requestsIter = mLoadRequests.find(filePath);
+    // Add callback to request list
+    const auto& requestsIter = mLoadRequests.find(url);
     if (requestsIter == mLoadRequests.end())
     {
         std::vector<TextureLoaderCallback> callbacks = {callback};
 
-        mLoadRequests.emplace(filePath, callbacks);
+        mLoadRequests.emplace(url, callbacks);
     }
     else
     {
         requestsIter->second.push_back(callback);
     }
 
-    emscripten_fetch_attr_t attr;
-    emscripten_fetch_attr_init(&attr);
+    // Load the texture
+    const auto& cacheIter = mTextureCache.find(url);
+    if (cacheIter != mTextureCache.end())
+    {
+        resolveRequests(cacheIter->first, // url
+                        cacheIter->second // texture
+        );
+    }
+    else
+    {
+        emscripten_fetch_attr_t attr;
+        emscripten_fetch_attr_init(&attr);
 
-    strcpy(attr.requestMethod, "GET");
-    attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
-    attr.onsuccess  = downloadSucceeded;
-    attr.onerror    = downloadFailed;
-    attr.userData   = this;
+        strcpy(attr.requestMethod, "GET");
+        attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
+        attr.onsuccess  = downloadSucceeded;
+        attr.onerror    = downloadFailed;
+        attr.userData   = this;
 
-    emscripten_fetch(&attr, filePath.c_str());
+        emscripten_fetch(&attr, url.c_str());
+    }
 }
 
 //-----
@@ -91,6 +117,12 @@ unsigned int TextureLoader::generateTexture(const unsigned char*   data,
     stbi_image_free(imageData);      // Free the image data
 
     return texture;
+}
+
+//-----
+void TextureLoader::cacheTexture(const std::string& url, unsigned int texture)
+{
+    mTextureCache[url] = texture;
 }
 
 //-----
